@@ -1,0 +1,75 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.8.0)
+      public_suffix (>= 2.0.2, < 5.0)
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
+    declarative (0.0.20)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
+    equalizer (0.0.11)
+    excon (0.89.0)
+    faraday (1.8.0)
+      faraday-em_http (~> 1.0)
+      faraday-em_synchrony (~> 1.0)
+      faraday-excon (~> 1.1)
+      faraday-httpclient (~> 1.0.1)
+      faraday-net_http (~> 1.0)
+      faraday-net_http_persistent (~> 1.1)
+      faraday-patron (~> 1.0)
+      faraday-rack (~> 1.0)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords (>= 0.0.4)
+    faraday-em_http (1.0.0)
+    faraday-em_synchrony (1.0.0)
+    faraday-excon (1.1.0)
+    faraday-httpclient (1.0.1)
+    faraday-net_http (1.0.1)
+    faraday-net_http_persistent (1.2.0)
+    faraday-patron (1.0.0)
+    faraday-rack (1.0.0)
+    faraday_middleware (1.2.0)
+      faraday (~> 1.0)
+    ice_nine (0.11.2)
+    mini_mime (1.1.2)
+    multi_json (1.15.0)
+    multipart-post (2.1.1)
+    public_suffix (4.0.6)
+    representable (3.1.1)
+      declarative (< 0.1.0)
+      trailblazer-option (>= 0.1.1, < 0.2.0)
+      uber (< 0.2.0)
+    ruby2_keywords (0.0.5)
+    shortcut_ruby (0.11.0)
+    thread_safe (0.3.6)
+    tracker_api (1.13.0)
+      addressable
+      equalizer
+      excon
+      faraday
+      faraday_middleware
+      mini_mime
+      multi_json
+      representable
+      virtus
+    trailblazer-option (0.1.2)
+    uber (0.1.0)
+    virtus (2.0.0)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
+
+PLATFORMS
+  x86_64-darwin-19
+
+DEPENDENCIES
+  shortcut_ruby
+  tracker_api
+
+BUNDLED WITH
+   2.3.4
