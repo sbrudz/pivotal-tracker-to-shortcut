@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 # Converts a pivotal story to shortcut format
-class Converter
-  attr_reader :story
+class StoryConverter
+  attr_reader :story, :members
 
-  def initialize(story:)
+  def initialize(story:, members:)
     @story = story
+    @members = members
   end
 
   def convert
@@ -13,12 +14,16 @@ class Converter
       'name': story.name,
       'project_id': ENV['SHORTCUT_PROJECT_ID'],
       'description': story.description,
-      'external_id': story.id,
+      'external_id': story.id.to_s,
+      'external_links': [story.url],
+      'created_at': story.created_at,
+      'updated_at': story.updated_at,
       'labels': convert_labels,
       'story_type': story.story_type,
       'tasks': convert_tasks,
-      'requested_by_id': '61b36229-f039-4506-b760-8e33d3b04df6', # TK
-      'comments': convert_comments
+      'requested_by_id': convert_user_id_to_member_id(story.requested_by_id),
+      'comments': convert_comments,
+      'owner_ids': story.owner_ids.map { |owner_id| convert_user_id_to_member_id(owner_id) }
     }
   end
 
@@ -51,11 +56,18 @@ class Converter
 
   def convert_comment(comment)
     {
-      'author_id': 123, # TODO: use a real author id
-      'external_id': comment.id,
+      # 'author_id': convert_user_id_to_member_id(comment.person_id),
+      'external_id': comment.id.to_s,
       'text': comment.text,
       'created_at': comment.created_at,
       'updated_at': comment.updated_at
     }
+  end
+
+  def convert_user_id_to_member_id(pivotal_id)
+    user = members.find do |member|
+      member[:pivotal_id] == pivotal_id
+    end
+    user[:shortcut_id]
   end
 end
