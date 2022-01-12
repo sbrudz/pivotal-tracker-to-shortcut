@@ -34,7 +34,16 @@ class StoryConverter
   end
 
   def convert_labels
-    story.labels.map { |label| convert_label(label) } + [{ 'name': 'pivotal' }]
+    labels = story.labels.map { |label| convert_label(label) } + [{ 'name': 'pivotal' }]
+    add_has_attachments_label(labels)
+  end
+
+  def add_has_attachments_label(labels)
+    attachments? ? labels + [{ 'name': 'has_attachments_in_pivotal' }] : labels
+  end
+
+  def attachments?
+    story.comments.any? { |comment| comment.attachments.present? }
   end
 
   def convert_comments
