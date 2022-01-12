@@ -4,6 +4,8 @@
 class MemberListFinder
   attr_reader :shortcut_client, :pivotal_project
 
+  FUZZY_EMAIL_REGEX = /(.+@.+)\./.freeze
+
   def initialize(shortcut_client:, pivotal_project:)
     @shortcut_client = shortcut_client
     @pivotal_project = pivotal_project
@@ -12,8 +14,11 @@ class MemberListFinder
   def build
     pivotal_members.map do |pivotal_member|
       shortcut_member = shortcut_members.find do |member|
-        pivotal_member[:pivotal_email] == member[:shortcut_email] ||
-          pivotal_member[:pivotal_name] == member[:shortcut_name]
+        pivotal_email = pivotal_member[:pivotal_email]
+        shortcut_email = member[:shortcut_email]
+        pivotal_email == shortcut_email ||
+          pivotal_member[:pivotal_name] == member[:shortcut_name] ||
+          pivotal_email.slice(FUZZY_EMAIL_REGEX) == shortcut_email.slice(FUZZY_EMAIL_REGEX)
       end || { shortcut_id: 'Not Found' }
       pivotal_member.merge(shortcut_member)
     end
