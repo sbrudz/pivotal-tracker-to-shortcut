@@ -13,7 +13,7 @@ class StoryConverter
     {
       'name': story.name,
       'project_id': ENV['SHORTCUT_PROJECT_ID'],
-      'description': story.description,
+      'description': story.description || '',
       'external_id': story.id.to_s,
       'external_links': [story.url],
       'created_at': story.created_at,
@@ -23,7 +23,7 @@ class StoryConverter
       'tasks': convert_tasks,
       'requested_by_id': convert_user_id_to_member_id(story.requested_by_id),
       'comments': convert_comments,
-      'owner_ids': story.owner_ids.map { |owner_id| convert_user_id_to_member_id(owner_id) }
+      'owner_ids': convert_owners
     }
   end
 
@@ -31,6 +31,12 @@ class StoryConverter
 
   def convert_tasks
     story.tasks.map { |task| convert_task(task) }
+  end
+
+  def convert_owners
+    return [] unless story.owner_ids.present?
+
+    story.owner_ids.map { |owner_id| convert_user_id_to_member_id(owner_id) }
   end
 
   def convert_labels
