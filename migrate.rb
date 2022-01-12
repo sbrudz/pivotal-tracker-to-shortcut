@@ -11,7 +11,7 @@ shortcut_client = ShortcutRuby::Shortcut.new(ENV['SHORTCUT_API_TOKEN'])
 
 project = pivotal_client.project(ENV['PIVOTAL_PROJECT_ID'])
 members = MemberListFinder.new(shortcut_client: shortcut_client, pivotal_project: project).build
-stories = project.stories(filter: 'type:feature,chore,bug AND -state:accepted AND label:shortcut AND -label:migrated')
+stories = project.stories(filter: 'type:feature,chore,bug AND -state:accepted AND label:shortcut AND -label:migrated_to_shortcut')
 factory = ConverterFactory.new(members: members)
 puts "Found #{stories.count} stories to transfer"
 formatted_stories = stories.map do |story|
@@ -21,7 +21,7 @@ results = shortcut_client.stories.bulk_create(stories: formatted_stories)
 puts results
 if results[:code] == '201'
   stories.each do |story|
-    story.add_label('migrated')
+    story.add_label('migrated_to_shortcut')
     story.save
   end
 end
