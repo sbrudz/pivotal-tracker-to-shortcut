@@ -40,8 +40,8 @@ class StoryConverter
   end
 
   def convert_labels
-    labels = story.labels.map { |label| convert_label(label) } + [{ 'name': 'pivotal' }]
-    add_has_attachments_label(labels)
+    existing_labels = story.labels.present? ? story.labels.map { |label| convert_label(label) } : []
+    add_has_attachments_label(existing_labels) + [{ 'name': 'pivotal' }]
   end
 
   def add_has_attachments_label(labels)
