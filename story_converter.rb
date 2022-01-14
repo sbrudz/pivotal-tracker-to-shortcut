@@ -2,11 +2,12 @@
 
 # Converts a pivotal story to shortcut format
 class StoryConverter
-  attr_reader :story, :members
+  attr_reader :story, :members, :workflow_state_mapper
 
-  def initialize(story:, members:)
+  def initialize(story:, members:, workflow_state_mapper:)
     @story = story
     @members = members
+    @workflow_state_mapper = workflow_state_mapper
   end
 
   def convert
@@ -23,7 +24,8 @@ class StoryConverter
       'tasks': convert_tasks,
       'requested_by_id': convert_user_id_to_member_id(story.requested_by_id),
       'comments': convert_comments,
-      'owner_ids': convert_owners
+      'owner_ids': convert_owners,
+      'workflow_state_id': convert_workflow_state_id
     }
   end
 
@@ -42,6 +44,10 @@ class StoryConverter
   def convert_labels
     existing_labels = story.labels.present? ? story.labels.map { |label| convert_label(label) } : []
     add_has_attachments_label(existing_labels) + [{ 'name': 'pivotal' }]
+  end
+
+  def convert_workflow_state_id
+    workflow_state_mapper.get_shortcut_state_id(story.current_state)
   end
 
   def add_has_attachments_label(labels)

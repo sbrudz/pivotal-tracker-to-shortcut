@@ -5,13 +5,15 @@ require 'tracker_api'
 require 'shortcut_ruby'
 require './converter_factory'
 require './member_list_finder'
+require './workflow_state_mapper'
 
 pivotal_client = TrackerApi::Client.new(token: ENV['PIVOTAL_API_TOKEN'])
 shortcut_client = ShortcutRuby::Shortcut.new(ENV['SHORTCUT_API_TOKEN'])
 
 project = pivotal_client.project(ENV['PIVOTAL_PROJECT_ID'])
 members = MemberListFinder.new(shortcut_client: shortcut_client, pivotal_project: project).build
-factory = ConverterFactory.new(members: members)
+workflow_state_mapper = WorkflowStateMapper.new(shortcut_client: shortcut_client)
+factory = ConverterFactory.new(members: members, workflow_state_mapper: workflow_state_mapper)
 
 dry_run = ENV['DRY_RUN'] == 'true'
 puts '** Running in DRY_RUN mode - No updates will be made **' if dry_run
