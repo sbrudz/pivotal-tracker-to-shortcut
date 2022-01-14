@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Converts a pivotal user id to a shortcut user id
+# Builds a list of members containing both pivotal user id and shortcut user id
 class MemberListFinder
   attr_reader :shortcut_client, :pivotal_project
 
