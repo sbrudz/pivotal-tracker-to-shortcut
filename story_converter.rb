@@ -80,7 +80,7 @@ class StoryConverter
     {
       'author_id': convert_user_id_to_member_id(comment.person_id),
       'external_id': comment.id.to_s,
-      'text': comment.text,
+      'text': comment.text || '',
       'created_at': comment.created_at,
       'updated_at': comment.updated_at
     }
