@@ -32,7 +32,12 @@ stories.each_slice(10) do |batch_of_stories|
   else
     results = shortcut_client.stories.bulk_create(stories: formatted_stories)
 
-    raise "Error #{results[:code]} encountered" unless results[:code] == '201'
+    unless results[:code] == '201'
+      puts JSON.pretty_generate(formatted_stories)
+      puts '********'
+      puts results
+      raise "Error #{results[:code]} encountered"
+    end
 
     batch_of_stories.each do |story|
       story.add_label('migrated_to_shortcut')
