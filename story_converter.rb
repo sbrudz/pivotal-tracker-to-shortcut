@@ -25,7 +25,8 @@ class StoryConverter
       'requested_by_id': convert_user_id_to_member_id(story.requested_by_id),
       'comments': convert_comments,
       'owner_ids': convert_owners,
-      'workflow_state_id': convert_workflow_state_id
+      'workflow_state_id': convert_workflow_state_id,
+      'estimate': story.estimate&.to_i
     }
   end
 
